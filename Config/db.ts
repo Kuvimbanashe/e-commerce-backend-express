@@ -19,3 +19,6 @@ const DbConnect = async ()=>{
         }
     }
 }
+
+
+module.exports = DbConnect()
