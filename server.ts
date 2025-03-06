@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 dotenv.config();
 
 const app = express();
+require("./Config/db")
 
 // Middleware
 app.use(express.json());
