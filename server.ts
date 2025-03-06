@@ -22,12 +22,7 @@ app.get("/", (req, res) => {
   res.send("E-commerce API is running...");
 });
 
-// Connect to MongoDB
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/ecommerce";
-mongoose
-  .connect(MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+
 
 // Start Server
 const PORT = process.env.PORT || 8080;
