@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node server.ts",
+    "dev": "nodemon server.ts",
     "build": "tsc",
     "start": "ts-node server.ts"
   },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Kuvimbanashe/e-commerce-backend-express.git"
