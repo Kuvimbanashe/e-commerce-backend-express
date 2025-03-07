@@ -1,15 +1,14 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import mongoose from "mongoose";
-import morgan from "morgan";
-import cookieParser from "cookie-parser";
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 
 // Load environment variables
 dotenv.config();
 
 const app = express();
-require("./Config/db")
+require("./Config/db");
 
 // Middleware
 app.use(express.json());
@@ -17,11 +16,9 @@ app.use(cors({ origin: "*", credentials: true }));
 app.use(morgan("dev"));
 app.use(cookieParser());
 
-// Sample Route
-app.get("/", (req, res) => {
+app.get("/", (req: import("express").Request, res: import("express").Response) => {
   res.send("E-commerce API is running...");
 });
-
 
 
 // Start Server
