@@ -12,8 +12,24 @@ const getUsers = async (req, res) => {
 
 
 const createUser = async (req, res) => {
-    const user = new User(req.body);
+
+    const { name, email, phone , password,role, address} = req.body;
+
+    const missingFields = [];
+    if (!name) missingFields.push('Name');
+    if (!email) missingFields.push('Email');
+    if (!phone) missingFields.push('Phone');
+    if (!password) missingFields.push('Password');
+    if (!role) missingFields.push('Role');
+    if (!address) missingFields.push('Address');
+
+    if (missingFields.length > 0) {
+        return res.status(400).json({ message: `${missingFields.join(', ')} is missing` });
+    }
+    
     try {
+
+        const user = new User({ name, email, phone , password,role, address});
         const newUser = await user.save();
         res.status(201).json(newUser);
     } catch (error) {
@@ -24,6 +40,9 @@ const createUser = async (req, res) => {
 const getUserById = async (req, res) => {
 
     const id = req.params.id;
+    if (!id) {
+        return res.status(400).json({ message: 'Id is missing' });
+    }
     try {
         const user = await User.findOne({ _id: id });
 
@@ -38,6 +57,25 @@ const getUserById = async (req, res) => {
 
 const updateUser = async (req, res) => {
     const id = req.params.id;
+
+    if (!id) {
+        return res.status(400).json({ message: 'Id is missing' });
+    }
+
+    const { name, email, phone , password,role, address} = req.body;
+    
+    const missingFields = [];
+    if (!name) missingFields.push('Name');
+    if (!email) missingFields.push('Email');
+    if (!phone) missingFields.push('Phone');
+    if (!password) missingFields.push('Password');
+    if (!role) missingFields.push('Role');
+    if (!address) missingFields.push('Address');
+
+    if (missingFields.length > 0) {
+        return res.status(400).json({ message: `${missingFields.join(', ')} is missing` });
+    }
+
     try {
         const user = await User.findOneAndUpdate({ _id: id }, req.body, { new: true });
         if (!user) {
@@ -53,6 +91,9 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     const id = req.params.id;
+    if (!id) {
+        return res.status(400).json({ message: 'Id is missing' });
+    }
     try {
         const user = await User.findOneAndDelete({ _id: id });
         if (!user) {
@@ -65,4 +106,4 @@ const deleteUser = async (req, res) => {
     }
 }
 
-module.exports = { getUsers, createUser, getUserById, updateUser };
+module.exports = { getUsers, createUser, getUserById, updateUser, deleteUser };
