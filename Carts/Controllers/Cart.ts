@@ -1,7 +1,9 @@
-const Cart = require("../model/Cart")
+import Cart from "../model/Cart";
 import { Request, Response } from "express";
 
 const createCart = async (req:Request, res:Response) => {
+
+    
     try {
         const cart = new Cart(req.body)
         await cart.save()

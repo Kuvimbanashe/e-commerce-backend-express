@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export interface ICart extends Document {
   user: mongoose.Schema.Types.ObjectId;
-  items: { product: mongoose.Schema.Types.ObjectId; quantity: number }[];
+  items: { product: mongoose.Schema.Types.ObjectId; quantity: number }[];                                                                                                                                                                                                               
   createdAt: Date;
 }
 
