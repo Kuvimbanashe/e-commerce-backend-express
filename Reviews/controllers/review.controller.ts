@@ -98,3 +98,6 @@ const deleteReview = async (req: Request, res: Response): Promise<void> => {
 
 
 
+export { getReviews, createReview, getReviewById, updateReview, deleteReview };
+
+
