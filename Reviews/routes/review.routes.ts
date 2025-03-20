@@ -10,3 +10,6 @@ router.post('/', createReview);
 router.get('/:id', getReviewById);
 router.put('/:id', updateReview);
 router.delete('/:id', deleteReview);    
+
+
+module.exports = router;
