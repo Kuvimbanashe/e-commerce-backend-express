@@ -5,7 +5,6 @@ export interface IOrder extends Document {
   products: { product: mongoose.Schema.Types.ObjectId; quantity: number }[];
   totalPrice: number;
   status: "pending" | "shipped" | "delivered" | "cancelled";
-  createdAt: Date;
 }
 
 const OrderSchema = new Schema<IOrder>(
