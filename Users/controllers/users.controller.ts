@@ -1,109 +1,81 @@
-const User = require('../model/user.model');
+import { Request, Response } from 'express';
+import User from '../model/user.model';
 
-
-const getUsers = async (req: any, res: any): Promise<void> => {
+const getUsers = async (req: Request, res: Response): Promise<void> => {
     try {
         const users = await User.find();
         res.status(200).json(users);
     } catch (error) {
         res.status(500).json({ message: (error as Error).message });
     }
-}
+};
 
+const createUser = async (req: Request, res: Response): Promise<void> => {
+    const { name, email, phone, password, role, address } = req.body;
 
-const createUser = async (req: any, res: any): Promise<void> => {
-
-    const { name, email, phone , password,role, address} = req.body;
-
-    const missingFields = [];
-    if (!name) missingFields.push('Name');
-    if (!email) missingFields.push('Email');
-    if (!phone) missingFields.push('Phone');
-    if (!password) missingFields.push('Password');
-    if (!role) missingFields.push('Role');
-    if (!address) missingFields.push('Address');
+    const missingFields = ['name', 'email', 'phone', 'password', 'role', 'address']
+        .filter(field => !req.body[field]);
 
     if (missingFields.length > 0) {
-        return res.status(400).json({ message: `${missingFields.join(', ')} is missing` });
+         res.status(400).json({ message: `${missingFields.join(', ')} is missing` });
     }
-    
-    try {
 
-        const user = new User({ name, email, phone , password,role, address});
+    try {
+        const user = new User({ name, email, phone, password, role, address });
         const newUser = await user.save();
         res.status(201).json(newUser);
     } catch (error) {
-        res.status(400).json({ message: (error as Error).message});
+        res.status(400).json({ message: (error as Error).message });
     }
-}
+};
 
-const getUserById = async (req: any, res: any): Promise<void> => {
-
-    const id = req.params.id;
+const getUserById = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
     if (!id) {
-        return res.status(400).json({ message: 'Id is missing' });
+         res.status(400).json({ message: 'Id is missing' });
     }
     try {
-        const user = await User.findOne({ _id: id });
-
+        const user = await User.findById(id);
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+             res.status(404).json({ message: 'User not found' });
         }
         res.status(200).json(user);
     } catch (error) {
         res.status(404).json({ message: (error as Error).message });
     }
-}
+};
 
-const updateUser = async (req: any, res: any): Promise<void> => {
-    const id = req.params.id;
-
+const updateUser = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
     if (!id) {
-        return res.status(400).json({ message: 'Id is missing' });
-    }
-
-    const { name, email, phone , password,role, address} = req.body;
-    
-    const missingFields = [];
-    if (!name) missingFields.push('Name');
-    if (!email) missingFields.push('Email');
-    if (!phone) missingFields.push('Phone');
-    if (!password) missingFields.push('Password');
-    if (!role) missingFields.push('Role');
-    if (!address) missingFields.push('Address');
-
-    if (missingFields.length > 0) {
-        return res.status(400).json({ message: `${missingFields.join(', ')} is missing` });
+         res.status(400).json({ message: 'Id is missing' });
     }
 
     try {
-        const user = await User.findOneAndUpdate({ _id: id }, req.body, { new: true });
+        const user = await User.findByIdAndUpdate(id, req.body, { new: true });
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+             res.status(404).json({ message: 'User not found' });
         }
         res.status(200).json(user);
-    }
-    catch (error) {
+    } catch (error) {
         res.status(404).json({ message: (error as Error).message });
     }
+};
 
-}
-
-const deleteUser = async (req: any, res: any): Promise<void> => {
-    const id = req.params.id;
+const deleteUser = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
     if (!id) {
-        return res.status(400).json({ message: 'Id is missing' });
+         res.status(400).json({ message: 'Id is missing' });
     }
     try {
-        const user = await User.findOneAndDelete({ _id: id });
+        const user = await User.findByIdAndDelete(id);
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+             res.status(404).json({ message: 'User not found' });
         }
         res.status(200).json({ message: 'User deleted successfully' });
-    }
-    catch (error) {
+    } catch (error) {
         res.status(404).json({ message: (error as Error).message });
     }
-}
+};
 
-module.exports = { getUsers, createUser, getUserById, updateUser, deleteUser };
+export { getUsers, createUser, getUserById, updateUser, deleteUser };
