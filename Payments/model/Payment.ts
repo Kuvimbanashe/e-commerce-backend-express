@@ -5,8 +5,8 @@ export interface IPayment extends Document {
   order: mongoose.Schema.Types.ObjectId;
   amount: number;
   paymentMethod: "credit_card" | "paypal" | "crypto";
-  status: "pending" | "completed" | "failed";
-  createdAt: Date;
+  status: "pending" | "completed" | "failed" | "refunded" | "canceled";
+  
 }
 
 const PaymentSchema = new Schema<IPayment>(
@@ -14,7 +14,7 @@ const PaymentSchema = new Schema<IPayment>(
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
     order: { type: Schema.Types.ObjectId, ref: "Order", required: true },
     amount: { type: Number, required: true },
-    paymentMethod: { type: String, enum: ["credit_card", "paypal", "crypto"], required: true },
+    paymentMethod: { type: String, enum: ["credit_card", "paypal", "crypto","failed","refunded","canceled"], required: true },
     status: { type: String, enum: ["pending", "completed", "failed"], default: "pending" },
   },
   { timestamps: true }
