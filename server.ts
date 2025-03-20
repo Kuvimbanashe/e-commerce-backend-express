@@ -7,6 +7,8 @@ const cookieParser = require("cookie-parser");
 //routes
 const userRoutes = require("./Users/routes/user.routes")
 const productRoutes = require("./Products/routes/product.routes")
+const reviewRoutes = require("./Reviews/routes/review.routes")
+const paymentRoutes = require("./Payments/routes/payment.routes")
 
 // Load environment variables
 dotenv.config();
@@ -22,6 +24,8 @@ app.use(cookieParser());
 
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/reviews", reviewRoutes);
+app.use("/api/payments", paymentRoutes);
 
 app.get("/", (req: import("express").Request, res: import("express").Response) => {
   res.send("E-commerce API is running...");
