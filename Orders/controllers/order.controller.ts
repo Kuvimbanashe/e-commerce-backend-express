@@ -1,6 +1,13 @@
 import Order from "../model/Order";
 import { Request, Response } from "express";
 
+//  user: mongoose.Schema.Types.ObjectId;
+//   products: { product: mongoose.Schema.Types.ObjectId; quantity: number }[];
+//   totalPrice: number;
+//   status: "pending" | "shipped" | "delivered" | "cancelled";
+
+
+
 const getOrders = async (req: Request, res: Response): Promise<void> => {
     try {
         const orders = await Order.find();
@@ -12,9 +19,9 @@ const getOrders = async (req: Request, res: Response): Promise<void> => {
 
 
 const createOrder = async (req: Request, res: Response): Promise<void> => {
-    const { orderItems, shippingAddress, paymentMethod, itemsPrice, taxPrice, shippingPrice, totalPrice } = req.body;
+    const { user, products, totalPrice, status} = req.body;
 
-    const missingFields = ['orderItems', 'shippingAddress', 'paymentMethod', 'itemsPrice', 'taxPrice', 'shippingPrice', 'totalPrice']
+    const missingFields = ['user', 'products', 'totalPrice', 'status']
         .filter(field => !req.body[field]);
 
     if (missingFields.length > 0) {
@@ -22,12 +29,15 @@ const createOrder = async (req: Request, res: Response): Promise<void> => {
     }
 
     try {
-        const order = new Order({ orderItems, shippingAddress, paymentMethod, itemsPrice, taxPrice, shippingPrice, totalPrice });
+        const order = new Order({ user, products, totalPrice, status });
         const newOrder = await order.save();
         res.status(201).json(newOrder);
     } catch (error) {
         res.status(400).json({ message: (error as Error).message });
     }
 };
+
+
+
 
 
