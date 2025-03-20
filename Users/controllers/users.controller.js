@@ -21,4 +21,34 @@ const createUser = async (req, res) => {
     }
 }
 
+const getUserById = async (req, res) => {
+
+    const id = req.params.id;
+    try {
+        const user = await User.findOne({ _id: id });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+const updateUser = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const user = await User.findOneAndUpdate({ _id: id }, req.body, { new: true });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json(user);
+    }
+    catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+
+}
+
 module.exports = { getUsers, createUser };
