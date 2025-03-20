@@ -3,7 +3,10 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+
+//routes
 const userRoutes = require("./Users/routes/user.routes")
+const productRoutes = require("./Products/routes/product.routes")
 
 // Load environment variables
 dotenv.config();
@@ -18,6 +21,7 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 
 app.use("/api/users", userRoutes);
+app.use("/api/products", productRoutes);
 
 app.get("/", (req: import("express").Request, res: import("express").Response) => {
   res.send("E-commerce API is running...");
